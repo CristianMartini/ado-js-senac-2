@@ -6,7 +6,7 @@
  * @return {string[]} Os nomes dos alunos que fizeram este exercício.
  */
 function nomesDosAlunos() {
-    return [ "João da Silva", "Maria da Silva" ];
+    return ["Cristian Martini"];
 }
 
 /**
@@ -48,19 +48,41 @@ class Nota {
      * @param {number} peso O peso da nota, entre 0 a 10, na composição total da nota semestral.
      */
     #verificar(valor, peso) {
-        naoFizIssoAinda();
+
+        let tipoValor = determinarTipo2(valor);
+        let tipoPeso = determinarTipo2(peso);
+
+        if (tipoValor !== 'number' || tipoPeso !== 'number') {
+            throw new TypeError("A nota e o peso devem ser numéricos.");
+        }
+
+        if (valor < 0 || valor > 10 || peso < 0 || peso > 10) {
+            throw new RangeError("A nota e o peso devem ser um número entre 0 e 10.");
+        }
+
     }
+
 
     // EXERCÍCIO 2.
     // Crie os métodos getters necessários de todos os parâmetros recebidos no construtor aqui.
 
+          get valor() {
+            return this.#valor;
+        }
+    
+        get peso() {
+            return this.#peso;
+        }
+    
+        
+          
     // EXERCÍCIO 3.
     /**
      * Retorna o valor ponderado desta nota. Ou seja, a nota numa escala de 0 a peso.
      * @returns {number} O valor ponderado desta nota.
      */
     get notaPonderada() {
-        naoFizIssoAinda();
+        return  (this.#peso * this.#valor) / 10;
     }
 
     // EXERCÍCIO 4.
@@ -257,15 +279,15 @@ function removerItemNota() {
  */
 function verificarAlunoMatriculado() {
     function lerNota(texto) {
-        return lerNumero(texto, {min: 0, max: 10, casas: 2, erro: "Informe a nota corretamente."});
+        return lerNumero(texto, { min: 0, max: 10, casas: 2, erro: "Informe a nota corretamente." });
     }
 
     function lerPeso(texto) {
-        return lerNumero(texto, {min: 0, max: 10, casas: 2, erro: "Informe o peso corretamente."});
+        return lerNumero(texto, { min: 0, max: 10, casas: 2, erro: "Informe o peso corretamente." });
     }
 
     function lerPresenca(texto) {
-        return lerNumero(texto, {min: 0, max: 100, casas: 0, erro: "Informe a presença corretamente."});
+        return lerNumero(texto, { min: 0, max: 100, casas: 0, erro: "Informe a presença corretamente." });
     }
 
     function lerTexto(oQue, texto) {
