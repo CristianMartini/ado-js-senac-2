@@ -93,7 +93,7 @@ class Nota {
      * @returns {String} A representação string deste objeto.
      */
     toString() {
-        naoFizIssoAinda();
+         return `nota = ${this.valor}, peso = ${this.peso}`;
     }
 }
 
@@ -107,6 +107,14 @@ class Nota {
  * A presença é um inteiro entre 0 e 100 representando a porcentagem de comparecimento às aulas.
  */
 class AlunoMatricula {
+    #nome;
+    #genero;
+    #disciplina;
+    #ados;
+    #presenca;
+
+
+
 
     // EXERCÍCIO 5.
     /**
@@ -135,16 +143,39 @@ class AlunoMatricula {
      *
      * @param {String} nome O nome do(a) aluno(a). Nunca deve ser uma string em branco.
      * @param {String} genero "M" se for um aluno ou "F" se for uma aluna.
-     * @param {String} disciplina O nome da disciplina. Nunca deve ser uma string em branco.
+     * @param {String} disciplina O nome da disciplina. Nnca deve ser uma string em branco.
      * @param {Array<Nota>} ados Os ADOs feitos pelo(a) aluno(a).
      * @param {number} presenca A quantidade de presença que o(a) aluno(a) teve na aula.
      * @throw TypeError Se qualquer parâmetro for do tipo errado.
      * @throw RangeError Se o valor de qualquer parâmetro não for aceitável.
      */
     constructor(nome, genero, disciplina, ados, presenca) {
-        naoFizIssoAinda();
-    }
+      this.nome = nome;
+      this.genero = genero;
+      this.disciplina = disciplina;
+      this.ados = ados;
+      this.presenca = presenca;
+      
 
+    if (typeof nome !== 'string' || nome === "") {
+        throw new TypeError('Este campo nao está correto');
+      }
+      if (genero !== 'M' && genero !== 'F') {
+        throw new RangeError('O gênero deve ser "M" ou "F"');
+      }
+      if (typeof disciplina !== 'string' || disciplina.trim() === "") {
+        throw new RangeError('Este campo nao está correto');
+      }
+      if (!Array.isArray(ados) || !ados.every(nota => nota instanceof Nota)) {
+        throw new TypeError('Este campo nao está correto');
+      }
+      if (ados.reduce((sum, nota) => sum + nota.peso, 0) !== 10) {
+        throw new RangeError('A soma dos pesos das notas deve ser 10');
+      }
+      if (typeof presenca !== 'number' || presenca < 0 || presenca > 100) {
+        throw new RangeError('A presença deve ser um número entre 0 e 100');
+      }
+    }
     // EXERCÍCIO 6.
     // Crie os métodos getters necessários de todos os parâmetros recebidos no construtor aqui.
 
