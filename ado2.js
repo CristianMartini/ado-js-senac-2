@@ -150,17 +150,17 @@ class AlunoMatricula {
      * @throw RangeError Se o valor de qualquer parâmetro não for aceitável.
      */
     constructor(nome, genero, disciplina, ados, presenca) {
-      this.nome = nome;
-      this.genero = genero;
-      this.disciplina = disciplina;
-      this.ados = ados;
-      this.presenca = presenca;
+      this.#nome = nome;
+      this.#genero = genero;
+      this.#disciplina = disciplina;
+      this.#ados = ados;
+      this.#presenca = presenca;
       
 
-    if (typeof nome !== 'string' || nome === "") {
+    if (nome.trim() === '') {
         throw new TypeError('Este campo nao está correto');
       }
-      if (genero !== 'M' && genero !== 'F') {
+      if (genero !== 'M' && genero !== 'F'  ) {
         throw new RangeError('O gênero deve ser "M" ou "F"');
       }
       if (typeof disciplina !== 'string' || disciplina.trim() === "") {
@@ -176,6 +176,21 @@ class AlunoMatricula {
         throw new RangeError('A presença deve ser um número entre 0 e 100');
       }
     }
+      get nome() {
+        return this.#nome;
+    }
+    get genero() {
+        return this.#genero;
+    }
+    get  disciplina() {
+        return this.#disciplina;
+    }
+    get ados() {
+        return this.#ados;
+    }
+    get presenca() {
+        return this.#presenca;
+    }
     // EXERCÍCIO 6.
     // Crie os métodos getters necessários de todos os parâmetros recebidos no construtor aqui.
 
@@ -189,7 +204,8 @@ class AlunoMatricula {
     get media() {
         naoFizIssoAinda();
     }
-
+    
+    
     // EXERCÍCIO 8.
     /**
      * Este método deve retornar a situação do(a) aluno(a), que é uma dessas 4:
