@@ -6,7 +6,7 @@
  * @return {string[]} Os nomes dos alunos que fizeram este exercício.
  */
 function nomesDosAlunos() {
-    return ["Cristian Martini"];
+    return ["Cristian Martini, Claudio Souza Jr"];
 }
 
 /**
@@ -66,23 +66,23 @@ class Nota {
     // EXERCÍCIO 2.
     // Crie os métodos getters necessários de todos os parâmetros recebidos no construtor aqui.
 
-          get valor() {
-            return this.#valor;
-        }
-    
-        get peso() {
-            return this.#peso;
-        }
-    
-        
-          
+    get valor() {
+        return this.#valor;
+    }
+
+    get peso() {
+        return this.#peso;
+    }
+
+
+
     // EXERCÍCIO 3.
     /**
      * Retorna o valor ponderado desta nota. Ou seja, a nota numa escala de 0 a peso.
      * @returns {number} O valor ponderado desta nota.
      */
     get notaPonderada() {
-        return  (this.#peso * this.#valor) / 10;
+        return (this.#peso * this.#valor) / 10;
     }
 
     // EXERCÍCIO 4.
@@ -93,7 +93,7 @@ class Nota {
      * @returns {String} A representação string deste objeto.
      */
     toString() {
-         return `nota = ${this.valor}, peso = ${this.peso}`;
+        return `nota = ${this.valor}, peso = ${this.peso}`;
     }
 }
 
@@ -150,39 +150,42 @@ class AlunoMatricula {
      * @throw RangeError Se o valor de qualquer parâmetro não for aceitável.
      */
     constructor(nome, genero, disciplina, ados, presenca) {
-      this.#nome = nome;
-      this.#genero = genero;
-      this.#disciplina = disciplina;
-      this.#ados = ados;
-      this.#presenca = presenca;
-      
+        this.#nome = nome;
+        this.#genero = genero;
+        this.#disciplina = disciplina;
+        this.#ados = ados;
+        this.#presenca = presenca;
 
-    if (nome.trim() === '') {
-        throw new TypeError('Este campo nao está correto');
-      }
-      if (genero !== 'M' && genero !== 'F'  ) {
-        throw new RangeError('O gênero deve ser "M" ou "F"');
-      }
-      if (typeof disciplina !== 'string' || disciplina.trim() === "") {
-        throw new RangeError('Este campo nao está correto');
-      }
-      if (!Array.isArray(ados) || !ados.every(nota => nota instanceof Nota)) {
-        throw new TypeError('Este campo nao está correto');
-      }
-      if (ados.reduce((sum, nota) => sum + nota.peso, 0) !== 10) {
-        throw new RangeError('A soma dos pesos das notas deve ser 10');
-      }
-      if (typeof presenca !== 'number' || presenca < 0 || presenca > 100) {
-        throw new RangeError('A presença deve ser um número entre 0 e 100');
-      }
+
+        if (nome.trim() === '') {
+            throw new TypeError('Este campo nao está correto');
+        }
+        if (genero !== 'M' && genero !== 'F') {
+            throw new RangeError('O gênero deve ser "M" ou "F"');
+        }
+        if (typeof disciplina !== 'string' || disciplina.trim() === "") {
+            throw new RangeError('Este campo nao está correto');
+        }
+        if (!Array.isArray(ados) || !ados.every(nota => nota instanceof Nota)) {
+            throw new TypeError('Este campo nao está correto');
+        }
+        if (ados.reduce((sum, nota) => sum + nota.peso, 0) !== 10) {
+            throw new RangeError('A soma dos pesos das notas deve ser 10');
+        }
+        if (typeof presenca !== 'number' || presenca < 0 || presenca > 100) {
+            throw new RangeError('A presença deve ser um número entre 0 e 100');
+        }
     }
-      get nome() {
+
+    // EXERCÍCIO 6.
+    // Crie os métodos getters necessários de todos os parâmetros recebidos no construtor aqui.
+    get nome() {
         return this.#nome;
     }
     get genero() {
         return this.#genero;
     }
-    get  disciplina() {
+    get disciplina() {
         return this.#disciplina;
     }
     get ados() {
@@ -191,9 +194,6 @@ class AlunoMatricula {
     get presenca() {
         return this.#presenca;
     }
-    // EXERCÍCIO 6.
-    // Crie os métodos getters necessários de todos os parâmetros recebidos no construtor aqui.
-
     // EXERCÍCIO 7.
     /**
      * Este método calcula a nota final do(a) aluno(a) na disciplina.
@@ -204,8 +204,8 @@ class AlunoMatricula {
     get media() {
         naoFizIssoAinda();
     }
-    
-    
+
+
     // EXERCÍCIO 8.
     /**
      * Este método deve retornar a situação do(a) aluno(a), que é uma dessas 4:
@@ -221,7 +221,12 @@ class AlunoMatricula {
      * @returns {String} A situação final do(a) aluno(a) na disciplina.
      */
     get situacao() {
-        naoFizIssoAinda();
+        const m = this.media;
+        const p = this.presenca;
+        if (m >= 7 && p >= 75) return 'AP';
+        if (m >= 7 && p < 75) return 'RF';
+        if (m < 7 && p >= 75) return 'RM';
+        return 'RMF';
     }
 
     // EXERCÍCIO 9.
@@ -350,11 +355,11 @@ function verificarAlunoMatriculado() {
     let texto;
     try {
         const nome = lerTexto("o nome do(a) aluno(a)", document.querySelector("#nome").value);
-        const escolheuEle = naoFizIssoAinda();
-        const escolheuEla = naoFizIssoAinda();
+        const escolheuEle = determinarTipo2();
+        const escolheuEla = determinarTipo2();
         if (!escolheuEle && !escolheuEla) throw new Error("Escolha o gênero do(a) aluno(a) corretamente.");
         const genero = escolheuEle ? "M" : "F";
-        const disciplina = naoFizIssoAinda();
+        const disciplina = determinarTipo2();
         const ados = [];
         for (const item of document.querySelectorAll(naoFizIssoAinda())) {
             const nota = lerNota(naoFizIssoAinda());
@@ -377,3 +382,15 @@ function verificarAlunoMatriculado() {
 // * area
 // * circunferencia
 // Se o raio recebido no construtor não for um número, lance um TypeError. Se for negativo, lance RangeError.
+class Circulo {
+    constructor(raio) {
+        if (typeof raio !== 'number' || isNaN(raio) || !isFinite(raio)) throw new TypeError('O raio deve ser um número');
+        if (raio < 0) throw new RangeError('O raio não pode ser negativo');
+        this._raio = raio;
+    }
+    get raio() { return this._raio; }
+    get diametro() { return this._raio * 2; }
+    get area() { return Math.PI * this._raio ** 2; }
+    get circunferencia() { return 2 * Math.PI * this._raio; }
+
+}
