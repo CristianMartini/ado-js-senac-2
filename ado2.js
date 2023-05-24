@@ -158,10 +158,10 @@ class AlunoMatricula {
 
 
         if (nome.trim() === '') {
-            throw new TypeError('Este campo nao está correto');
+            throw new RangeError('Este campo nao está correto');
         }
-        if (genero !== 'M' && genero !== 'F') {
-            throw new RangeError('O gênero deve ser "M" ou "F"');
+        if (!(typeof genero === 'string' || genero instanceof String) || (genero !== 'M' && genero !== 'F')) {
+            throw new RangeError('O gênero deve ser "M" ou "F".');
         }
         if (typeof disciplina !== 'string' || disciplina.trim() === "") {
             throw new RangeError('Este campo nao está correto');
@@ -202,7 +202,7 @@ class AlunoMatricula {
      * @returns {number} A média final do(a) aluno(a) na disciplina.
      */
     get media() {
-        naoFizIssoAinda();
+        return this.#ados.reduce((sum, nota) => sum + nota.notaPonderada, 0);
     }
 
 
@@ -221,11 +221,11 @@ class AlunoMatricula {
      * @returns {String} A situação final do(a) aluno(a) na disciplina.
      */
     get situacao() {
-        const m = this.media;
-        const p = this.presenca;
-        if (m >= 7 && p >= 75) return 'AP';
-        if (m >= 7 && p < 75) return 'RF';
-        if (m < 7 && p >= 75) return 'RM';
+        const media = this.media;
+        const presenca = this.presenca;
+        if (media >= 7 && presenca >= 75) return 'AP';
+        if (media >= 7 && presenca < 75) return 'RF';
+        if (media < 7 && presenca >= 75) return 'RM';
         return 'RMF';
     }
 
@@ -245,9 +245,32 @@ class AlunoMatricula {
      * @returns {String} A situação final do(a) aluno(a) na disciplina, escrito por extenso.
      */
     get situacaoPorExtenso() {
-        naoFizIssoAinda();
+        if (this.media >= 7 && this.presenca >= 75) {
+            if (this.genero === 'M') {
+                return "aprovado";
+            } else {
+                return "aprovada";
+            }
+        } else if (this.media >= 7 && this.presenca < 75) {
+            if (this.genero === 'M') {
+                return "reprovado por falta";
+            } else {
+                return "reprovada por falta";
+            }
+        } else if (this.media < 7 && this.presenca >= 75) {
+            if (this.genero === 'M') {
+                return "reprovado por média";
+            } else {
+                return "reprovada por média";
+            }
+        } else {
+            if (this.genero === 'M') {
+                return "reprovado por média e falta";
+            } else {
+                return "reprovada por média e falta";
+            }
+        }
     }
-
     // EXERCÍCIO 10.
     /**
      * Este método deve retornar uma string contendo uma frase de status do(a) aluno(a) no seguinte formato:
