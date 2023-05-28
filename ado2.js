@@ -295,9 +295,21 @@ class AlunoMatricula {
      * @returns {String} O status descritivo do(a) aluno(a).
      */
     get status() {
-        naoFizIssoAinda();
+
+        const nome = this.nome;
+        const disciplina = this.disciplina;
+        const situacao = this.situacao;
+        const presenca = this.presenca;
+        const media = this.media
+        const situacaoPorExtenso = this.situacaoPorExtenso
+
+        return (nome + " tem média " + media + " na disciplina de " + disciplina + " e foi " + situacaoPorExtenso + " com " + presenca + "% de presença" + ".");
     }
 }
+
+
+
+
 
 // EXERCÍCIO 11.
 /**
@@ -319,8 +331,25 @@ class AlunoMatricula {
  * Coloque esse <li> dentro do <ul> que está dentro da <div> com a classe ex11e13 no ado2.html.
  */
 function criarItemNota() {
-    naoFizIssoAinda();
+    const ul = document.querySelector('.ex11a13 ul');
+    const pesoId = `peso-${ul.children.length + 1}`;
+    const notaId = `nota-${ul.children.length + 1}`;
+
+    const li = document.createElement('li');
+    li.innerHTML = `
+    <div>
+     <label for = "${notaId}">Nota:</label>
+     <input type= "text" id= "${notaId}">
+    </div>
+    <div>
+    <label for = "${pesoId}">Peso:</label>
+    <input type= "text" id= "${pesoId}">
+   </div>
+     `;
+    ul.appendChild(li);
 }
+
+
 
 // EXERCÍCIO 12.
 /**
@@ -328,7 +357,12 @@ function criarItemNota() {
  * Se não houver mais nenhum <li> a ser removido, nada deve ser feito.
  */
 function removerItemNota() {
-    naoFizIssoAinda();
+    const ul = document.querySelector('.ex11a13 ul');
+
+    if (ul.children.length > 0) {
+        const lastLi = ul.children[ul.children.length - 1];
+        ul.removeChild(lastLi);
+    }
 }
 
 // EXERCÍCIO 13.
