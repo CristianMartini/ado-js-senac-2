@@ -412,23 +412,29 @@ function verificarAlunoMatriculado() {
     let texto;
     try {
         const nome = lerTexto("o nome do(a) aluno(a)", document.querySelector("#nome").value);
-        const escolheuEle = determinarTipo2();
-        const escolheuEla = determinarTipo2();
+        const escolheuEle = document.querySelector("#ele").checked;
+        const escolheuEla =  document.querySelector("#ela").checked;
         if (!escolheuEle && !escolheuEla) throw new Error("Escolha o gênero do(a) aluno(a) corretamente.");
         const genero = escolheuEle ? "M" : "F";
-        const disciplina = determinarTipo2();
+        const disciplina = lerTexto("o nome da disciplina", document.querySelector("#disciplina").value);
         const ados = [];
-        for (const item of document.querySelectorAll(naoFizIssoAinda())) {
-            const nota = lerNota(naoFizIssoAinda());
-            const peso = lerPeso(naoFizIssoAinda());
-            ados.push(new Nota(naoFizIssoAinda()));
+        const somarPeso =0;
+        for (const item of document.querySelectorAll(".ex11a13 > ul > li")) {
+            const nota = lerNota(item.querySelectorAll("input")[0].value);
+            const peso = lerPeso(item.querySelectorAll("input")[1].value);
+            ados.push(new Nota(nota,peso));
+            somarPeso += peso;
         }
-        const presenca = lerPresenca(naoFizIssoAinda());
-        texto = new AlunoMatricula(naoFizIssoAinda()).status;
+        if (somarPeso != 10)
+            throw new Error("O peso das notas deve somar 10.");
+        
+        const presenca = lerPresenca(document.querySelector("#presenca").value);
+      const matricula= new AlunoMatricula(nome, genero, disciplina,ados, presenca);
+      texto = matricula.status;
     } catch (e) {
-        texto = naoFizIssoAinda();
+        texto = e.message;
     }
-    document.querySelector("#situacao").innerHTML = naoFizIssoAinda();
+    document.querySelector("#situacao").value = texto;
 }
 
 // EXERCÍCIO 14.
