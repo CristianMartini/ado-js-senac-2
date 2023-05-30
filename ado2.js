@@ -149,33 +149,50 @@ class AlunoMatricula {
      * @throw TypeError Se qualquer parâmetro for do tipo errado.
      * @throw RangeError Se o valor de qualquer parâmetro não for aceitável.
      */
-    constructor(nome, genero, disciplina, ados, presenca) {
-        this.#nome = nome;
-        this.#genero = genero;
-        this.#disciplina = disciplina;
-        this.#ados = ados;
-        this.#presenca = presenca;
-
-
-        if (nome.trim() === '') {
-            throw new RangeError('Este campo nao está correto');
-        }
-        if (!(typeof genero === 'string' || genero instanceof String) || (genero !== 'M' && genero !== 'F')) {
-            throw new RangeError('O gênero deve ser "M" ou "F".');
-        }
-        if (typeof disciplina !== 'string' || disciplina.trim() === "") {
-            throw new RangeError('Este campo nao está correto');
-        }
-        if (!Array.isArray(ados) || !ados.every(nota => nota instanceof Nota)) {
-            throw new TypeError('Este campo nao está correto');
-        }
-        if (ados.reduce((sum, nota) => sum + nota.peso, 0) !== 10) {
-            throw new RangeError('A soma dos pesos das notas deve ser 10');
-        }
-        if (typeof presenca !== 'number' || presenca < 0 || presenca > 100) {
-            throw new RangeError('A presença deve ser um número entre 0 e 100');
-        }
+    constructor(nome, genero, disciplina, ados, presenca ) {
+        if (typeof nome !== 'string') {
+			throw new TypeError ('nome inválido '+nome);
+		}
+		if (nome.trim().length === 0){
+			throw new RangeError ('nome inválido '+nome);
+		}
+			
+		if (typeof genero !== 'string') {
+			throw new TypeError('gênero inválido '+genero);
+		}
+		if(!['M', 'F'].includes(genero)) {
+			throw new RangeError('gênero inválido '+genero);			
+		}
+		if (typeof disciplina !== 'string'){
+			throw new TypeError('a disciplina inválida '+disciplina);
+		}
+		if (disciplina.trim().length === 0) {
+			throw new RangeError('a disciplina inválida '+disciplina);
+		}
+		
+		if (!Array.isArray(ados) || ados.some(nota => !(nota instanceof Nota))) {
+			throw new TypeError('O parâmetro "ados" deve ser um array de objetos da classe "Nota".');
+		}
+		if (ados.reduce((total, nota) => total + nota.peso, 0) !== 10) {
+			throw new RangeError('O peso das notas deve somar 10.');
+		}
+		if (!Number.isFinite(presenca)){
+			throw new TypeError('valor invalido');
+		}
+		if (presenca < 0 || presenca > 100) {
+			throw new RangeError('valor invalido');
+		}
+	
+		this.#nome = nome;
+		this.#genero = genero;
+		this.#disciplina = disciplina;
+	    this.#ados = ados;
+		this.#presenca = presenca;	
+		
+	
+		
     }
+	
 
     // EXERCÍCIO 6.
     // Crie os métodos getters necessários de todos os parâmetros recebidos no construtor aqui.
@@ -410,32 +427,31 @@ function verificarAlunoMatriculado() {
 
     // Comece a mexer no código daqui para baixo.
     let texto;
-    try {
+	try {
         const nome = lerTexto("o nome do(a) aluno(a)", document.querySelector("#nome").value);
         const escolheuEle = document.querySelector("#ele").checked;
-        const escolheuEla =  document.querySelector("#ela").checked;
+        const escolheuEla = document.querySelector("#ela").checked;
         if (!escolheuEle && !escolheuEla) throw new Error("Escolha o gênero do(a) aluno(a) corretamente.");
         const genero = escolheuEle ? "M" : "F";
         const disciplina = lerTexto("o nome da disciplina", document.querySelector("#disciplina").value);
         const ados = [];
-        const somarPeso =0;
+        let somaPesos = 0;
         for (const item of document.querySelectorAll(".ex11a13 > ul > li")) {
             const nota = lerNota(item.querySelectorAll("input")[0].value);
             const peso = lerPeso(item.querySelectorAll("input")[1].value);
-            ados.push(new Nota(nota,peso));
-            somarPeso += peso;
+            ados.push(new Nota(nota, peso));
+            somaPesos += peso;
         }
-        if (somarPeso != 10)
-            throw new Error("O peso das notas deve somar 10.");
-        
         const presenca = lerPresenca(document.querySelector("#presenca").value);
-      const matricula= new AlunoMatricula(nome, genero, disciplina,ados, presenca);
-      texto = matricula.status;
+
+        const matricula = new AlunoMatricula(nome, genero, disciplina, ados, presenca);
+        texto = matricula.status;
     } catch (e) {
         texto = e.message;
     }
     document.querySelector("#situacao").value = texto;
 }
+
 
 // EXERCÍCIO 14.
 //
